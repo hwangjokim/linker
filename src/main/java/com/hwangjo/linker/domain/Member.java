@@ -8,13 +8,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 
 @Entity @Getter
 public class Member {
-	@Id @GeneratedValue
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String username;
 	private String nickname;
@@ -25,8 +26,8 @@ public class Member {
 	private Role role;
 
 	@Builder
-	public Member(String userId, String nickname, String password, LocalDate registeredAt, Role role) {
-		this.username = userId;
+	public Member(String username, String nickname, String password, LocalDate registeredAt, Role role) {
+		this.username = username;
 		this.nickname = nickname;
 		this.password = password;
 		this.registeredAt = registeredAt;

@@ -18,6 +18,6 @@ public class BasicController {
     public String mainPage(Principal principal){
         if (principal == null)
             return "anonymous_main";
-        return "main";
+        return "redirect:/link";
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.hwangjo.linker.dto.LoginRequest;
 import com.hwangjo.linker.dto.RegisterRequest;
 import com.hwangjo.linker.service.UserService;
 
@@ -22,8 +23,9 @@ public class AuthController {
 	private final UserService service;
 
 	@GetMapping("/login")
-	public String login(Model model){
-		return "main";
+	public String login(Model model) {
+		model.addAttribute("request", new LoginRequest());
+		return "login";
 	}
 
 	@GetMapping("/register")

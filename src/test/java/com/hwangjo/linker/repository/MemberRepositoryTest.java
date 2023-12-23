@@ -24,10 +24,9 @@ class MemberRepositoryTest {
 	@Autowired
 	private PasswordEncoder encoder;
 	@Test
-	@Commit
 	void register(){
 		Member member = Member.builder()
-			.userId("testid")
+			.username("testid")
 			.password(encoder.encode("password"))
 			.nickname("testNick")
 			.registeredAt(LocalDate.now())

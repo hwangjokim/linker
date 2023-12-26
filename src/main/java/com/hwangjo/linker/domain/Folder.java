@@ -2,6 +2,7 @@ package com.hwangjo.linker.domain;
 
 import java.util.UUID;
 
+import lombok.Builder;
 import org.hibernate.annotations.GenericGenerator;
 
 import jakarta.persistence.Entity;
@@ -26,5 +27,17 @@ public class Folder {
 	@JoinColumn(name = "user_id")
 	private Member owner;
 
+	@Builder
+	public Folder(String folderName, boolean isShared, Member owner) {
+		this.folderName = folderName;
+		this.isShared = isShared;
+		this.owner = owner;
+	}
 
+	public Folder() {
+	}
+
+	public void updateFolderName(String  folderName){
+		this.folderName = folderName;
+	}
 }

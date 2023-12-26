@@ -25,15 +25,15 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity)  throws Exception{
 		httpSecurity
-			.authorizeHttpRequests((authorize) -> authorize
-				.requestMatchers("/test").authenticated()
-				.requestMatchers("/admin").hasRole("ADMIN")
-				.anyRequest().permitAll())
-			.formLogin(form -> form
-				.loginPage("/login")
-				.permitAll().defaultSuccessUrl("/", true))
-			.csrf((csrf) -> csrf.disable())
-			.userDetailsService(userDetailsService);
+				.authorizeHttpRequests((authorize) -> authorize
+						.requestMatchers("/", "/css/**", "/fonts/**").permitAll()
+						.requestMatchers("/register").permitAll()
+						.anyRequest().authenticated())
+				.formLogin(form -> form
+						.loginPage("/login")
+						.permitAll().defaultSuccessUrl("/", true))
+				.csrf((csrf) -> csrf.disable())
+				.userDetailsService(userDetailsService);
 		return httpSecurity.build();
 	}
 

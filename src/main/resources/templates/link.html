@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/default_layout}">
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+<div layout:fragment="content">
+<!-- 폴더와 링크를 표시할 컨테이너 -->
+  <div class="container">
+    <h2>내 링크
+      <button type="button" data-bs-toggle="modal" data-bs-target="#folderModal" class="btn btn-primary">
+      <i  class="bi bi-folder-plus"></i>
+        폴더 추가
+      </button>
+
+
+    </h2>
+    <!-- 폴더 목록 -->
+    <ul class="list-group">
+      <!-- 폴더마다 반복해서 표시 -->
+      <li class="list-group-item" th:each="folder : ${folders}">
+        <!-- 폴더 아이콘과 폴더 이름 -->
+        <span>
+          <i class="bi bi-folder"></i>
+          <strong th:text="${folder.folderName}"></strong> <!-- 폴더 이름 -->
+        </span>
+        <!-- "+" 아이콘 -->
+        <span class="float-end">
+           <button type="button" class="btn btn-outline-info">
+          <i class="bi bi-file-plus"></i>
+          </button>
+          <button type="button" class="btn btn-outline-success">
+          <i class="bi bi-share"></i>
+          </button>
+          <button type="button" class="btn btn-outline-danger">
+          <i class="bi bi-trash"></i>
+          </button>
+        </span>
+        <!-- 해당 폴더에 속한 링크 목록 -->
+        <ul class="list-group mt-2">
+          <!-- 링크마다 반복해서 표시 -->
+<!--          <li class="list-group-item" th:each="link : ${folder.links}" th:text="${link.name}"></li>-->
+          <!-- 다른 링크들도 반복해서 표시 -->
+        </ul>
+      </li>
+      <!-- 다른 폴더들도 반복해서 표시 -->
+    </ul>
+  </div>
+
+  <div class="modal fade" id="folderModal" tabindex="-1" aria-labelledby="folderModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- 모달 헤더 -->
+        <div class="modal-header">
+          <h5 class="modal-title" id="folderModalLabel"><strong>폴더 추가</strong></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <!-- 모달 바디 -->
+        <div class="modal-body">
+          <!-- 입력 칸 -->
+          <form th:action th:object="${request}" method="post">
+            <div class="mb-3">
+              <input type="text" th:field="${request.folderName}" class="form-control" id="folderNameInput" name="folderName" placeholder="폴더 이름을 입력하세요">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+              <button type="submit" class="btn btn-primary">확인</button>
+            </div>
+          </form>
+        </div>
+        <!-- 모달 푸터 -->
+
+      </div>
+    </div>
+  </div>
+
+<!-- 부트스트랩 자바스크립트 CDN 링크 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</div>
+</html>

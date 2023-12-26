@@ -1,6 +1,8 @@
 package com.hwangjo.linker.domain;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.hwangjo.linker.enumerate.Role;
 
@@ -10,6 +12,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.Builder;
 import lombok.Getter;
 

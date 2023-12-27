@@ -26,10 +26,10 @@
         </span>
         <!-- "+" 아이콘 -->
         <span class="float-end">
-           <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#LinkModal" th:data-name="${folder.id}" th:onclick="openLinkModal(this.getAttribute('data-name'))" >
+           <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#LinkModal" th:data-name="${folder.id}" onclick="openLinkModal(this.getAttribute('data-name'))" >
           <i class="bi bi-file-plus"></i>
           </button>
-          <button type="button" class="btn btn-outline-success">
+          <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#folderShareModal" th:data-name="${folder.id}" th:data-second="${folder.shareStatus}" onclick="openShareModal(this.getAttribute('data-name'), this.getAttribute('data-second'))"  >
           <i class="bi bi-share"></i>
           </button>
           <button type="button" th:onclick="|location.href='@{/link/delete/{id}(id=${folder.id})}'|"
@@ -48,7 +48,7 @@
                   <i class="bi bi-link-45deg"></i>
                   <a th:href="@{${link.link}}" th:text="${link.link}"></a>
                   <!-- 링크 바로 오른쪽에 추가 텍스트 -->
-                  <span>추가로 쓸말</span>
+                  <span th:text="${link.description}"></span>
                 </div>
                 <div class="col-auto d-flex justify-content-end align-items-center">
                   <!-- 오른쪽에 아이콘 -->
@@ -99,6 +99,37 @@
     </div>
   </div>
 
+  <div class="modal fade" id="folderShareModal" tabindex="-1" aria-labelledby="folderShareModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- 모달 헤더 -->
+        <div class="modal-header">
+          <h5 class="modal-title" id="folderShareModalLabel"><strong>폴더 공유</strong></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <!-- 모달 바디 -->
+        <div class="modal-body">
+          <p>폴더를 공유하시겠습니까?</p>
+          <form th:action="@{/link/share}" th:object="${shareRequest}" method="post">
+          <div class="form-check form-switch">
+            <input class="form-check-input" th:field="${shareRequest.shareStatus}" type="checkbox" id="folderShareToggle">
+            <input type="hidden" th:field="${shareRequest.folderId}" id="shareFolderId" th:name="folderId" />
+            <label class="form-check-label" for="folderShareToggle">ON/OFF</label>
+          </div>
+            <div id="linkDisplay">
+              <input type="text" class="form-control mb-2" id="linkOutput" readonly>
+            </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" >저장</button>
+          </div>
+          </form>
+        </div>
+        <!-- 모달 푸터 -->
+
+      </div>
+    </div>
+  </div>
+
   <div class="modal fade" id="LinkModal" tabindex="-1" aria-labelledby="LinkModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -125,6 +156,8 @@
         <!-- 모달 푸터 -->
       </div>
     </div>
+
+
   </div>
 
 <!-- 부트스트랩 자바스크립트 CDN 링크 -->
@@ -134,6 +167,21 @@
     function openLinkModal(folderId) {
       document.getElementById('folderId').value = folderId; // 모달 내 숨겨진 입력 필드에 고유값 설정
     }
+
+    function openShareModal(folderId, isShare){
+      document.getElementById('shareFolderId').value = folderId; // 모달 내 숨겨진 입력 필드에 고유값 설정
+
+      if(isShare === 'true'){
+        document.getElementById('folderShareToggle').setAttribute('checked','checked')
+      } else{
+        document.getElementById('folderShareToggle').removeAttribute('checked')
+
+      }
+      document.getElementById('linkOutput').value = "localhost:8080/share/" + folderId;
+    }
   </script>
+
+
+
 </div>
 </html>

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.ObjectError;
 import org.thymeleaf.util.StringUtils;
 
@@ -20,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class UserService {
 	private final PasswordEncoder encoder; // BCryptEncoder
 	private final MemberRepository repository;

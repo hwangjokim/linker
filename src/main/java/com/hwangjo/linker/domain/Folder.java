@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import jakarta.persistence.*;
 import lombok.Builder;
-import org.hibernate.annotations.GenericGenerator;
 
 import lombok.Getter;
 
@@ -17,19 +16,19 @@ public class Folder {
 	private UUID id;
 
 	private String folderName;
-	private boolean isShared;
+	private Boolean shareStatus;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private Member owner;
 
-	@OneToMany(mappedBy = "folder")
+	@OneToMany(mappedBy = "folder", orphanRemoval = true)
 	List<Link> links = new ArrayList<>();
 
 	@Builder
-	public Folder(String folderName, boolean isShared, Member owner) {
+	public Folder(String folderName, boolean shareStatus, Member owner) {
 		this.folderName = folderName;
-		this.isShared = isShared;
+		this.shareStatus = shareStatus;
 		this.owner = owner;
 	}
 
@@ -38,5 +37,9 @@ public class Folder {
 
 	public void updateFolderName(String  folderName){
 		this.folderName = folderName;
+	}
+
+	public void updateShareStatus(Boolean shareStatus){
+		this.shareStatus = shareStatus;
 	}
 }

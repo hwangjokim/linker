@@ -4,6 +4,7 @@ import com.hwangjo.linker.config.security.CustomUser;
 import com.hwangjo.linker.domain.Link;
 import com.hwangjo.linker.dto.FolderRequest;
 import com.hwangjo.linker.dto.LinkRequest;
+import com.hwangjo.linker.dto.ShareRequest;
 import com.hwangjo.linker.service.FolderService;
 import com.hwangjo.linker.service.LinkService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,6 +30,7 @@ public class LinkController {
 		model.addAttribute("folders", folderService.getAllFolders(user));
 		model.addAttribute("FolderRequest", new FolderRequest());
 		model.addAttribute("LinkRequest", new LinkRequest());
+		model.addAttribute("shareRequest", new ShareRequest());
 		return "link";
 	}
 
@@ -56,6 +58,14 @@ public class LinkController {
 							 @PathVariable("folderId") UUID folderId,
 							 @PathVariable("linkId") Long linkId) {
 		linkService.deleteLink(user, linkId, folderId);
+		return "redirect:/link";
+	}
+
+	@PostMapping("/share")
+	public String shareLink(@AuthenticationPrincipal CustomUser user,
+							ShareRequest request){
+		folderService.shareFolder(user, request);
+		log.info("request = {}", request);
 		return "redirect:/link";
 	}
 

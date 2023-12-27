@@ -3,24 +3,26 @@ package com.hwangjo.linker.service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.UUID;
 
 import com.hwangjo.linker.config.security.CustomUser;
 import com.hwangjo.linker.domain.Folder;
 import com.hwangjo.linker.domain.Member;
 import com.hwangjo.linker.dto.FolderRequest;
+import com.hwangjo.linker.dto.ShareRequest;
+import com.hwangjo.linker.dto.SharedFolderResponse;
 import com.hwangjo.linker.repository.FolderRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class FolderService {
     private final FolderRepository repository;
 
@@ -29,7 +31,7 @@ public class FolderService {
         Folder folder = Folder.builder()
             .folderName(request.folderName)
             .owner(user.getMember())
-            .isShared(false)
+            .shareStatus(false)
             .build();
         return repository.save(folder);
     }
@@ -56,5 +58,18 @@ public class FolderService {
     public Folder validateAndGetFolder(CustomUser user, UUID folderID) {
         return repository.findByIdAndOwner(folderID, user.getMember()).orElseThrow(() -> new NoSuchElementException("폴더가 존재하지 않거나, 권한이 없습니다."));
     }
+
+    public void shareFolder(CustomUser user, ShareRequest request){
+        Folder folder = validateAndGetFolder(user, request.getFolderId());
+        folder.updateShareStatus(request.getShareStatus());
+    }
+
+    public SharedFolderResponse getSharedFolder(UUID folderId){
+        Folder folder = repository.findById(folderId).orElseThrow(NoSuchElementException::new);
+        if (!folder.getShareStatus()) throw new IllegalStateException();
+
+        return SharedFolderResponse.from(folder);
+    }
+
 
 }

@@ -14,7 +14,7 @@ public class FolderRequest {
         return Folder.builder().
                 folderName(this.folderName)
                 .owner(owner)
-                .isShared(false)
+                .shareStatus(false)
                 .build();
     }
 }

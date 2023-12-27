@@ -26,22 +26,47 @@
         </span>
         <!-- "+" 아이콘 -->
         <span class="float-end">
-           <button type="button" class="btn btn-outline-info">
+           <button type="button" class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#LinkModal" th:data-name="${folder.id}" th:onclick="openLinkModal(this.getAttribute('data-name'))" >
           <i class="bi bi-file-plus"></i>
           </button>
           <button type="button" class="btn btn-outline-success">
           <i class="bi bi-share"></i>
           </button>
-          <button type="button" class="btn btn-outline-danger">
+          <button type="button" th:onclick="|location.href='@{/link/delete/{id}(id=${folder.id})}'|"
+                  class="btn btn-outline-danger">
           <i class="bi bi-trash"></i>
           </button>
         </span>
         <!-- 해당 폴더에 속한 링크 목록 -->
-        <ul class="list-group mt-2">
-          <!-- 링크마다 반복해서 표시 -->
-<!--          <li class="list-group-item" th:each="link : ${folder.links}" th:text="${link.name}"></li>-->
-          <!-- 다른 링크들도 반복해서 표시 -->
-        </ul>
+        <div class="container">
+          <ul class="list-group mt-2">
+            <!-- 링크마다 반복해서 표시 -->
+            <li th:each="link : ${folder.links}" class="list-group-item">
+              <div class="row">
+                <div class="col">
+                  <!-- 왼쪽에 링크 -->
+                  <a th:href="@{${link.link}}" th:text="${link.link}"></a>
+                  <!-- 링크 바로 오른쪽에 추가 텍스트 -->
+                  <span>추가로 쓸말</span>
+                </div>
+                <div class="col-auto d-flex justify-content-end align-items-center">
+                  <!-- 오른쪽에 아이콘 -->
+
+                  <!-- 오른쪽에 추가적인 글자 -->
+                  <span th:text="'생성일 : ' + ${link.createdAt}"></span>
+                  <button type="button" th:onclick="|location.href='@{/link/delete/{id}(id=${folder.id})}'|"
+                          class="btn btn-outline-danger">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+              </div>
+            </li>
+            <!-- 다른 링크들도 반복해서 표시 -->
+          </ul>
+        </div>
+
+
+
       </li>
       <!-- 다른 폴더들도 반복해서 표시 -->
     </ul>
@@ -58,9 +83,9 @@
         <!-- 모달 바디 -->
         <div class="modal-body">
           <!-- 입력 칸 -->
-          <form th:action th:object="${request}" method="post">
+          <form th:action th:object="${FolderRequest}" method="post">
             <div class="mb-3">
-              <input type="text" th:field="${request.folderName}" class="form-control" id="folderNameInput" name="folderName" placeholder="폴더 이름을 입력하세요">
+              <input type="text" th:field="${FolderRequest.folderName}" class="form-control" id="folderNameInput" name="folderName" placeholder="폴더 이름을 입력하세요">
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
@@ -69,7 +94,34 @@
           </form>
         </div>
         <!-- 모달 푸터 -->
+      </div>
+    </div>
+  </div>
 
+  <div class="modal fade" id="LinkModal" tabindex="-1" aria-labelledby="LinkModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- 모달 헤더 -->
+        <div class="modal-header">
+          <h5 class="modal-title" id="LinkModalLabel"><strong>폴더 추가</strong></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <!-- 모달 바디 -->
+        <div class="modal-body">
+          <!-- 입력 칸 -->
+          <form th:action="@{/link/add}" th:object="${LinkRequest}" method="post">
+            <div class="mb-3">
+              <input type="text" th:field="${LinkRequest.link}" class="form-control" id="LinkNameInput" name="link" placeholder="링크 이름을 입력하세요.">
+              <input type="text" th:field="${LinkRequest.description}" class="form-control" id="DescriptionInput" name="description" placeholder="링크 설명을 입력하세요.">
+              <input type="hidden" th:field="${LinkRequest.folderId}" id="folderId" th:name="folderId" />
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+              <button type="submit" class="btn btn-primary">확인</button>
+            </div>
+          </form>
+        </div>
+        <!-- 모달 푸터 -->
       </div>
     </div>
   </div>
@@ -77,5 +129,10 @@
 <!-- 부트스트랩 자바스크립트 CDN 링크 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script th:inline="javascript">
+    function openLinkModal(folderId) {
+      document.getElementById('folderId').value = folderId; // 모달 내 숨겨진 입력 필드에 고유값 설정
+    }
+  </script>
 </div>
 </html>

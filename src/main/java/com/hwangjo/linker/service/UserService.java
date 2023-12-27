@@ -25,7 +25,7 @@ public class UserService {
 	private final MemberRepository repository;
 
 	public ArrayList<String> register(RegisterRequest request){
-		log.info("request : {}", request);
+		log.info("FolderRequest : {}", request);
 		ArrayList<String> result = validateRegister(request);
 		if (!result.isEmpty()) return  result;
 		Member newMember = Member.builder()

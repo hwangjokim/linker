@@ -51,5 +51,13 @@ public class LinkController {
 		return "redirect:/link";
 	}
 
+	@GetMapping("/delete/{folderId}/{linkId}")
+	public String deleteLink(@AuthenticationPrincipal CustomUser user,
+							 @PathVariable("folderId") UUID folderId,
+							 @PathVariable("linkId") Long linkId) {
+		linkService.deleteLink(user, linkId, folderId);
+		return "redirect:/link";
+	}
+
 
 }

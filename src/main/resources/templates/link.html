@@ -45,6 +45,7 @@
               <div class="row">
                 <div class="col">
                   <!-- 왼쪽에 링크 -->
+                  <i class="bi bi-link-45deg"></i>
                   <a th:href="@{${link.link}}" th:text="${link.link}"></a>
                   <!-- 링크 바로 오른쪽에 추가 텍스트 -->
                   <span>추가로 쓸말</span>
@@ -54,7 +55,7 @@
 
                   <!-- 오른쪽에 추가적인 글자 -->
                   <span th:text="'생성일 : ' + ${link.createdAt}"></span>
-                  <button type="button" th:onclick="|location.href='@{/link/delete/{id}(id=${folder.id})}'|"
+                  <button type="button" th:onclick="|location.href='@{/link/delete/{folderId}/{linkId}(folderId=${folder.id},linkId=${link.id})}'|"
                           class="btn btn-outline-danger">
                     <i class="bi bi-trash"></i>
                   </button>

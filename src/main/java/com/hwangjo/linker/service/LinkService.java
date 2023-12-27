@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.NoSuchElementException;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -21,6 +23,7 @@ import java.time.LocalDateTime;
 public class LinkService {
     private final LinkRepository linkRepository;
     private final FolderRepository folderRepository;
+    private final FolderService folderService;
 
     public Link addNewLink(CustomUser user, LinkRequest request) {
         Folder folder = folderRepository.getReferenceById(request.getFolderId());
@@ -31,5 +34,16 @@ public class LinkService {
                 .lastClickedAt(LocalDate.now())
                 .folder(folder).build();
         return linkRepository.save(link);
+    }
+
+    public void deleteLink(CustomUser user, Long linkId, UUID folderId){
+        Link link = validateAndGetLink(user, linkId, folderId);
+        linkRepository.delete(link);
+    }
+
+    private Link validateAndGetLink(CustomUser user, Long linkId, UUID folderId){
+        return folderService.validateAndGetFolder(user, folderId).getLinks()
+                .stream()
+                .filter(l -> l.getId().equals(linkId)).findFirst().orElseThrow(NoSuchElementException::new);
     }
 }

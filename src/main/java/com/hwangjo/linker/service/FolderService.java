@@ -53,7 +53,7 @@ public class FolderService {
         repository.delete(folder);
     }
 
-    private Folder validateAndGetFolder(CustomUser user, UUID folderID) {
+    public Folder validateAndGetFolder(CustomUser user, UUID folderID) {
         return repository.findByIdAndOwner(folderID, user.getMember()).orElseThrow(() -> new NoSuchElementException("폴더가 존재하지 않거나, 권한이 없습니다."));
     }
 

@@ -22,10 +22,10 @@ public class Folder {
 	@JoinColumn(name = "user_id")
 	private Member owner;
 
-	@OneToMany(mappedBy = "folder", orphanRemoval = true)
+	@OneToMany(mappedBy = "folder")
 	List<Link> links = new ArrayList<>();
 
-	@OneToMany(mappedBy = "folder", orphanRemoval = true)
+	@OneToMany(mappedBy = "folder")
 	List<FolderShare> shares = new ArrayList<>();
 
 	@Builder

@@ -59,17 +59,7 @@ public class FolderService {
         return repository.findByIdAndOwner(folderID, user.getMember()).orElseThrow(() -> new NoSuchElementException("폴더가 존재하지 않거나, 권한이 없습니다."));
     }
 
-    public void shareFolder(CustomUser user, ShareRequest request){
-        Folder folder = validateAndGetFolder(user, request.getFolderId());
-        folder.updateShareStatus(request.getShareStatus());
-    }
 
-    public SharedFolderResponse getSharedFolder(UUID folderId){
-        Folder folder = repository.findById(folderId).orElseThrow(NoSuchElementException::new);
-        if (!folder.getShareStatus()) throw new IllegalStateException();
-
-        return SharedFolderResponse.from(folder);
-    }
 
 
 }

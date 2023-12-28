@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/default_layout}">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        /* 추가적인 스타일링 */
+        .non-exist {
+            height: 100vh; /* 화면 전체 높이로 설정 */
+            display: flex;
+            flex-direction: column;
+            justify-content: center; /* 세로 가운데 정렬 */
+            align-items: center; /* 가로 가운데 정렬 */
+        }
+    </style>
+</head>
+<div layout:fragment="content">
+    <!-- 폴더와 링크를 표시할 컨테이너 -->
+    <div class="container">
+        <h2>내가 공유 받은 폴더</h2>
+
+        <div th:if="${folders.size()} == 0" class="non-exist">
+            <!-- 환영 문구 -->
+            <div>
+                <div class="row">
+                    <div class="col text-center">
+                        <h1>아직 공유 받은 폴더가 없어요 😊</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 폴더 목록 -->
+        <ul class="list-group">
+            <!-- 폴더마다 반복해서 표시 -->
+            <li class="list-group-item" th:each="folder : ${folders}">
+                <!-- 폴더 아이콘과 폴더 이름 -->
+                <span>
+          <i class="bi bi-folder"></i>
+          <strong th:text="${folder.folderName}"></strong> <!-- 폴더 이름 -->
+        </span>
+                <!-- "+" 아이콘 -->
+                <!-- 해당 폴더에 속한 링크 목록 -->
+                <div class="container">
+                    <ul class="list-group mt-2">
+                        <!-- 링크마다 반복해서 표시 -->
+                        <li th:each="link : ${folder.links}" class="list-group-item">
+                            <div class="row">
+                                <div class="col">
+                                    <!-- 왼쪽에 링크 -->
+                                    <i class="bi bi-link-45deg"></i>
+                                    <a th:href="@{${link.link}}" th:text="${link.link}"></a>
+                                    <!-- 링크 바로 오른쪽에 추가 텍스트 -->
+                                    <span th:text="${link.description}"></span>
+                                </div>
+                                <div class="col-auto d-flex justify-content-end align-items-center">
+                                    <!-- 오른쪽에 아이콘 -->
+
+                                    <!-- 오른쪽에 추가적인 글자 -->
+                                    <span th:text="'생성일 : ' + ${link.createdAt}"></span>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- 다른 링크들도 반복해서 표시 -->
+                    </ul>
+                </div>
+            </li>
+            <!-- 다른 폴더들도 반복해서 표시 -->
+        </ul>
+    </div>
+
+
+    <!-- 부트스트랩 자바스크립트 CDN 링크 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+</div>
+</html>

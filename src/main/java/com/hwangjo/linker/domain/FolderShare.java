@@ -7,6 +7,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Builder;
 import lombok.Getter;
 
 @Entity
@@ -24,4 +25,12 @@ public class FolderShare {
 	@JoinColumn(name = "folder_id")
 	private Folder folder;
 
+	@Builder
+	public FolderShare(Member member, Folder folder) {
+		this.member = member;
+		this.folder = folder;
+	}
+
+	public FolderShare() {
+	}
 }

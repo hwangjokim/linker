@@ -37,7 +37,7 @@ class FolderRepositoryTest {
         Member member = memberRepository.findByUsername("testid").get();
         Folder testFolder1 = Folder.builder()
                 .folderName("TestFolder2")
-                .isShared(false)
+                .shareStatus(false)
                 .owner(member).build();
         Folder save = folderRepository.save(testFolder1);
 

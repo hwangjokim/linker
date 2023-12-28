@@ -99,6 +99,7 @@
     </div>
   </div>
 
+
   <div class="modal fade" id="folderShareModal" tabindex="-1" aria-labelledby="folderShareModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -109,26 +110,65 @@
         </div>
         <!-- 모달 바디 -->
         <div class="modal-body">
-          <p>폴더를 공유하시겠습니까?</p>
-          <form th:action="@{/link/share}" th:object="${shareRequest}" method="post">
-          <div class="form-check form-switch">
-            <input class="form-check-input" th:field="${shareRequest.shareStatus}" type="checkbox" id="folderShareToggle">
-            <input type="hidden" th:field="${shareRequest.folderId}" id="shareFolderId" th:name="folderId" />
-            <label class="form-check-label" for="folderShareToggle">ON/OFF</label>
-          </div>
-            <div id="linkDisplay">
-              <input type="text" class="form-control mb-2" id="linkOutput" readonly>
+          <!-- 탭 메뉴 -->
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="menu1-tab" data-bs-toggle="tab" data-bs-target="#menu1" type="button" role="tab" aria-controls="menu1" aria-selected="true">링크공유</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="menu2-tab" data-bs-toggle="tab" data-bs-target="#menu2" type="button" role="tab" aria-controls="menu2" aria-selected="false">유저공유</button>
+            </li>
+          </ul>
+          <!-- 탭 내용 -->
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="menu1" role="tabpanel" aria-labelledby="menu1-tab">
+              <!-- 탭 1의 내용 -->
+              <p>링크를 통하여 공유합니다.</p>
+              <form th:action="@{/share/link}" th:object="${linkShareRequest}" method="post">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" th:field="${linkShareRequest.shareStatus}" type="checkbox" id="folderShareToggle">
+                  <input type="hidden" th:field="${linkShareRequest.folderId}" id="shareFolderId" th:name="folderId" />
+                  <label class="form-check-label" for="folderShareToggle">ON/OFF</label>
+                </div>
+                <div id="linkDisplay">
+                  <input type="text" class="form-control mb-2" id="linkOutput" readonly>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-primary" >저장</button>
+                </div>
+              </form>
             </div>
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-primary" >저장</button>
+            <div class="tab-pane fade" id="menu2" role="tabpanel" aria-labelledby="menu2-tab">
+              <!-- 탭 2의 내용 -->
+              <p>유저를 통한 공유</p>
+              <div class="row mb-3">
+                <form th:action="@{/share/user}" th:object="${userShareRequest}" method="post">
+                <div class="col">
+                  <input type="text" class="form-control" th:field="${userShareRequest.username}" id="idInput" placeholder="아이디를 입력하세요">
+                  <input type="hidden" th:field="${userShareRequest.folderId}" id="userShareFolderId" th:name="folderId" />
+                </div>
+                <div class="col-auto">
+                  <button type="submit" class="btn btn-primary" id="addButton">추가</button>
+                </div>
+                </form>
+              </div>
+              <!-- 동적으로 추가되는 목록 -->
+              <ul id="dynamicList" class="list-group">
+                <!-- 타임리프를 통해 동적으로 생성되는 리스트 -->
+<!--                <li class="list-group-item" th:each="item : ${items}">-->
+<!--                  <span th:text="${item}"></span>-->
+<!--                </li>-->
+              </ul>
+            </div>
           </div>
-          </form>
         </div>
         <!-- 모달 푸터 -->
 
       </div>
     </div>
   </div>
+
+
 
   <div class="modal fade" id="LinkModal" tabindex="-1" aria-labelledby="LinkModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -156,8 +196,6 @@
         <!-- 모달 푸터 -->
       </div>
     </div>
-
-
   </div>
 
 <!-- 부트스트랩 자바스크립트 CDN 링크 -->
@@ -169,6 +207,7 @@
     }
 
     function openShareModal(folderId, isShare){
+      document.getElementById('userShareFolderId').value = folderId; // 모달 내 숨겨진 입력 필드에 고유값 설정
       document.getElementById('shareFolderId').value = folderId; // 모달 내 숨겨진 입력 필드에 고유값 설정
 
       if(isShare === 'true'){

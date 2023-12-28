@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/default_layout}">
+<head>
+  <style>
+    /* 추가적인 스타일링 */
+    .welcome-container {
+      height: 100vh; /* 화면 전체 높이로 설정 */
+      display: flex;
+      flex-direction: column;
+      justify-content: center; /* 세로 가운데 정렬 */
+      align-items: center; /* 가로 가운데 정렬 */
+    }
+  </style>
+</head>
+
+
+<div layout:fragment="content">
+  <div class="welcome-container">
+    <!-- 환영 문구 -->
+    <div>
+      <div class="row">
+        <div class="col text-center">
+          <h1>잘못 들어오셨어요! </h1>
+          <h3> 존재하지 않거나, 접근 권한이 없는 페이지입니다.</h3>
+      <button class="btn btn-primary" th:onclick="|location.href='@{/link}'|" >메인으로</button>
+        </div>
+      </div>
+  </div>
+</div>
+</div>
+</html>

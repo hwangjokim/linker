@@ -25,6 +25,9 @@ public class Folder {
 	@OneToMany(mappedBy = "folder", orphanRemoval = true)
 	List<Link> links = new ArrayList<>();
 
+	@OneToMany(mappedBy = "folder", orphanRemoval = true)
+	List<FolderShare> shares = new ArrayList<>();
+
 	@Builder
 	public Folder(String folderName, boolean shareStatus, Member owner) {
 		this.folderName = folderName;

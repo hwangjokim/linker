@@ -14,6 +14,7 @@ import java.util.UUID;
 
 @Repository
 public interface FolderRepository extends JpaRepository<Folder, UUID> {
+    @Query("select f from Folder f left join fetch f.links where f.owner = :member")
     List<Folder> findAllByOwner(@Param("member") Member member);
 
     boolean existsByFolderNameAndOwner(String folderName, Member member);

@@ -48,7 +48,7 @@ public class ShareController {
         return "redirect:/link";
     }
 
-    @GetMapping("/")
+    @GetMapping("/my")
     public String getMySharedFolder(@AuthenticationPrincipal CustomUser user, Model model) {
         model.addAttribute("folders", service.getAllUserSharedFolder(user));
         return "sharedFolder";

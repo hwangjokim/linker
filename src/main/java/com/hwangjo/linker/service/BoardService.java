@@ -1,6 +1,7 @@
 package com.hwangjo.linker.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Service;
@@ -40,6 +41,10 @@ public class BoardService {
 
 	public Board getBoard(Long id) {
 		return boardRepository.findBoardById(id).orElseThrow(NoSuchElementException::new);
+	}
+
+	public List<Board> getBoardList() {
+		return boardRepository.findAllBoard();
 	}
 
 	public void updateBoard(CustomUser user, Long id, BoardRequest request) {

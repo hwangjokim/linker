@@ -63,7 +63,6 @@
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#folderAttachModal">
                     폴더 첨부
                 </button>
-
                 <input type="hidden"  th:field="${request.folderId}" id="selectedFolder" name="selectedFolder" >
             </div>
             <button type="submit" class="btn btn-success">글쓰기</button>
@@ -84,7 +83,7 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-4" th:each="folder : ${folders}">
-                            <button type="button" class="btn btn-outline-primary btn-block mb-3" th:data-id="${folder.id}" onclick="selectFolder(this.getAttribute('data-name'))">
+                            <button type="button" class="btn btn-outline-primary btn-block mb-3" th:data-id="${folder.id}" onclick="selectFolder(this.getAttribute('data-id'))">
                                 <span th:text="${folder.folderName}"></span>
                             </button>
                         </div>

@@ -33,6 +33,7 @@ public class BoardService {
 
 		if(request.getFolderId() != null){
 			Folder folder = folderService.validateAndGetFolder(user, request.getFolderId());
+			folder.updateShareStatus(true);
 			board.setFolder(folder);
 		}
 

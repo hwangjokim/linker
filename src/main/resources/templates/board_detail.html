@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/default_layout}">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+<div layout:fragment="content">
+<div class="container mt-4">
+    <div class="row">
+        <div class="col" >
+            <!-- 게시물 세부 정보 -->
+            <h2 th:text="${board.title}"></h2>
+            <p class="text-muted">
+                <span th:text="${board.member.nickname}"></span>
+                <span class="mx-2">|</span>
+                <span th:text="${board.createdAt}"></span>
+            </p>
+            <div class="mb-4" th:text="${board.content}"></div>
+
+            <!-- 폴더 정보 -->
+            <div class="row align-items-center">
+                <div class="col">
+                    <span th:if="${board.folder}">폴더 이름: <span th:text="${board.folder.folderName}"></span></span>
+                </div>
+                <div class="col-auto">
+                    <button type="button" class="btn btn-primary" th:if="${board.folder}" th:onclick="|location.href='@{/{id}(id=${board.folder.id})}'|">
+                        폴더 보기
+                    </button>
+                </div>
+            </div>
+
+            <!-- 댓글 창 -->
+            <div class="mt-5">
+                <h4>댓글</h4>
+                <!-- 댓글 작성 폼 -->
+                <form action="#" method="post">
+                    <div class="mb-3">
+                        <label for="comment">댓글 작성</label>
+                        <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">작성</button>
+                </form>
+
+                <!-- 댓글 리스트 -->
+                <div class="mt-4">
+                    <h5>댓글 리스트</h5>
+                    <ul class="list-group">
+                        <!-- 예시 댓글 -->
+                        <li class="list-group-item">
+                            <div><span>작성자: John Doe</span></div>
+                            <div><span>작성 일자: 2023-12-22 15:30</span></div>
+                            <div><span>내용: 예시 댓글 내용입니다.</span></div>
+                        </li>
+                        <!-- 여기에 댓글 반복 표시 -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</html>

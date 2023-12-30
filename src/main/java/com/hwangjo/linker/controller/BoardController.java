@@ -4,6 +4,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -41,7 +42,12 @@ public class BoardController {
 	public String createBoard(@AuthenticationPrincipal CustomUser user, BoardRequest request) {
 		boardService.addNewBoard(user, request);
 		return "redirect:/board";
+	}
 
+	@GetMapping("/{boardId}")
+	public String viewBoard(@PathVariable("boardId") Long boardId, Model model) {
+		model.addAttribute("board", boardService.getBoard(boardId));
+		return "board_detail";
 	}
 
 }

@@ -61,4 +61,8 @@ public class BoardService {
 		return boardRepository.findByIdAndMember(id, user.getMember()).orElseThrow(NoSuchElementException::new);
 	}
 
+	private void detachFolder(Folder folder) {
+		boardRepository.updateFolderToNull(folder);
+	}
+
 }

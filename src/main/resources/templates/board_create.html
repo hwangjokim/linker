@@ -76,11 +76,15 @@
                 <!-- 모달 헤더 -->
                 <div class="modal-header">
                     <h5 class="modal-title" id="folderAttachModalLabel">폴더 선택</h5>
+
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
                 </div>
                 <!-- 모달 바디 -->
                 <!-- 반복해서 폴더 목록을 보여줄 부분 -->
                 <div class="modal-body">
+                    <span>선택된 폴더는, 자동으로 링크 공유가 켜집니다.</span>
+
                     <div class="row">
                         <div class="col-4" th:each="folder : ${folders}">
                             <button type="button" class="btn btn-outline-primary btn-block mb-3" th:data-id="${folder.id}" onclick="selectFolder(this.getAttribute('data-id'))">

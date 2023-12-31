@@ -1,23 +1,23 @@
 package com.hwangjo.linker.service;
 
-
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.hwangjo.linker.config.security.CustomUser;
 import com.hwangjo.linker.domain.Folder;
 import com.hwangjo.linker.domain.Member;
 import com.hwangjo.linker.dto.FolderRequest;
+import com.hwangjo.linker.repository.BoardRepository;
 import com.hwangjo.linker.repository.FolderRepository;
 import com.hwangjo.linker.repository.FolderShareRepository;
 import com.hwangjo.linker.repository.LinkRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -27,6 +27,7 @@ public class FolderService {
     private final FolderRepository folderRepository;
     private final LinkRepository linkRepository;
     private final FolderShareRepository shareRepository;
+    private final BoardRepository boardRepository;
 
     public Folder addNewFolder(CustomUser user, FolderRequest request){
         checkDuplicate(user.getMember(), request.folderName);
@@ -54,9 +55,11 @@ public class FolderService {
     }
     public void deleteFolder(CustomUser user, UUID folderId){
         Folder folder = validateAndGetFolder(user, folderId);
+        boardRepository.updateFolderToNull(folder);
         linkRepository.deleteAllByFolder(folder);
         shareRepository.deleteAllByFolder(folder);
         folderRepository.delete(folder);
+
     }
 
     public Folder validateAndGetFolder(CustomUser user, UUID folderID) {

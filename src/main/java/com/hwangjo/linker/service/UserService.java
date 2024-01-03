@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.ObjectError;
-import org.thymeleaf.util.StringUtils;
 
 import com.hwangjo.linker.domain.Member;
 import com.hwangjo.linker.dto.RegisterRequest;
@@ -26,10 +24,11 @@ public class UserService {
 	private final PasswordEncoder encoder; // BCryptEncoder
 	private final MemberRepository repository;
 
-	public ArrayList<String> register(RegisterRequest request){
+	public ArrayList<String> register(RegisterRequest request) {
 		log.info("FolderRequest : {}", request);
 		ArrayList<String> result = validateRegister(request);
-		if (!result.isEmpty()) return  result;
+		if (!result.isEmpty())
+			return result;
 		Member newMember = Member.builder()
 			.username(request.getUsername())
 			.password(encoder.encode(request.getPassword()))
@@ -41,11 +40,9 @@ public class UserService {
 		return result;
 	}
 
-	private ArrayList<String> validateRegister(RegisterRequest request){
+	private ArrayList<String> validateRegister(RegisterRequest request) {
 		ArrayList<String> errors = new ArrayList<>();
-		if (request.getUsername().isBlank()
-			|| request.getPassword().isBlank()
-			|| request.getNickname().isBlank())
+		if (request.getUsername().isBlank() || request.getPassword().isBlank() || request.getNickname().isBlank())
 			errors.add(ErrorMessage.BLANK_SPACE_EXIST.getMessage());
 
 		boolean isLongEnough = request.getPassword().length() >= 8;
@@ -54,10 +51,10 @@ public class UserService {
 		if (!isLongEnough || !hasLetter || !hasSpecialChar)
 			errors.add(ErrorMessage.PASSWORD_PATTERN_MISMATCH.getMessage());
 
-		if(repository.existsByUsername(request.getUsername()))
+		if (repository.existsByUsername(request.getUsername()))
 			errors.add(ErrorMessage.USERNAME_ALREADY_EXIST.getMessage());
 
-		if(!request.getPassword().equals(request.getPasswordRepeat()))
+		if (!request.getPassword().equals(request.getPasswordRepeat()))
 			errors.add(ErrorMessage.REGISTER_PASSWORD_MISMATCH.getMessage());
 
 		return errors;

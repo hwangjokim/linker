@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.hwangjo.linker.config.security.CustomUser;
 import com.hwangjo.linker.dto.BoardRequest;
+import com.hwangjo.linker.dto.CommentRequest;
 import com.hwangjo.linker.service.BoardService;
+import com.hwangjo.linker.service.CommentService;
 import com.hwangjo.linker.service.FolderService;
 
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ public class BoardController {
 
 	private final BoardService boardService;
 	private final FolderService folderService;
+	private final CommentService commentService;
 
 	@GetMapping
 	public String boardList(Model model) {
@@ -45,8 +48,12 @@ public class BoardController {
 	}
 
 	@GetMapping("/{boardId}")
-	public String viewBoard(@PathVariable("boardId") Long boardId, Model model) {
+	public String viewBoard(@AuthenticationPrincipal CustomUser user, @PathVariable("boardId") Long boardId,
+		Model model) {
 		model.addAttribute("board", boardService.getBoard(boardId));
+		model.addAttribute("comments", commentService.getComments(boardId));
+		model.addAttribute("commentRequest", new CommentRequest());
+		model.addAttribute("username", user.getMember().getUsername());
 		return "board_detail";
 	}
 

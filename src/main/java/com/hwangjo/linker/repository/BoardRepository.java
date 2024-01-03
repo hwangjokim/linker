@@ -14,7 +14,7 @@ import com.hwangjo.linker.domain.Member;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
-	@Query("select b from Board b left join fetch b.comments join fetch b.member where b.id = :id")
+	@Query("select b from Board b join fetch b.member where b.id = :id")
 	Optional<Board> findBoardById(@Param("id") Long id);
 
 	@Query("select b from Board b join fetch b.member")

@@ -29,9 +29,10 @@ public class BoardService {
 			.title(request.getTitle())
 			.content(request.getContent())
 			.createdAt(LocalDateTime.now())
-			.member(user.getMember()).build();
+			.member(user.getMember())
+			.build();
 
-		if(request.getFolderId() != null){
+		if (request.getFolderId() != null) {
 			Folder folder = folderService.validateAndGetFolder(user, request.getFolderId());
 			folder.updateShareStatus(true);
 			board.setFolder(folder);
@@ -52,17 +53,15 @@ public class BoardService {
 		Board board = validateAndGetBoard(user, id);
 		board.updateBoard(request.getTitle(), request.getContent());
 	}
-	public void deleteBoard(CustomUser user ,Long id) {
+
+	public void deleteBoard(CustomUser user, Long id) {
 		//TODO: 댓글기능 추가시, 댓글 먼저 삭제하는 Logic 추가
+		//TODO: 삭제 기능 자체 추가
 		boardRepository.delete(validateAndGetBoard(user, id));
 	}
 
 	private Board validateAndGetBoard(CustomUser user, Long id) {
 		return boardRepository.findByIdAndMember(id, user.getMember()).orElseThrow(NoSuchElementException::new);
-	}
-
-	private void detachFolder(Folder folder) {
-		boardRepository.updateFolderToNull(folder);
 	}
 
 }

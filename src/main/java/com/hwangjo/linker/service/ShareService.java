@@ -30,14 +30,15 @@ public class ShareService {
 	private final MemberRepository userRepository;
 	private final FolderShareRepository shareRepository;
 
-	public void shareFolderLink(CustomUser user, ShareRequest request){
+	public void shareFolderLink(CustomUser user, ShareRequest request) {
 		Folder folder = service.validateAndGetFolder(user, request.getFolderId());
 		folder.updateShareStatus(request.getShareStatus());
 	}
 
-	public SharedFolderResponse getLinkSharedFolder(UUID folderId){
+	public SharedFolderResponse getLinkSharedFolder(UUID folderId) {
 		Folder folder = folderRepository.findById(folderId).orElseThrow(NoSuchElementException::new);
-		if (!folder.getShareStatus()) throw new IllegalStateException();
+		if (!folder.getShareStatus())
+			throw new IllegalStateException();
 
 		return SharedFolderResponse.from(folder);
 	}
@@ -51,7 +52,7 @@ public class ShareService {
 		shareRepository.save(share);
 	}
 
-	public List<Folder> getAllUserSharedFolder(CustomUser user){
+	public List<Folder> getAllUserSharedFolder(CustomUser user) {
 		return shareRepository.findSharedFolderByMember(user.getMember());
 	}
 
